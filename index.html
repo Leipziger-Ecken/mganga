@@ -1,0 +1,395 @@
+<html>
+  <head>
+    <title>mganga - experimental onboarding UI</title>
+    <meta charset="utf-8">
+    
+    <style>
+      body,*,h1,h2,h3,p,form,select,input,button,div,section,label {
+        padding: 0;
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: #2a2a2a;
+        box-sizing: border-box;
+      }
+
+      .mganga-section *:not(h1) {
+        font-size: 1.3rem;
+      }
+
+      .float-left {
+        float: left;
+      }
+
+      #logo {
+        width: 70px;
+        margin: 0 auto;
+        margin-left: 43%;
+        margin-bottom: 40px;
+      }
+
+      /** INPUT **/
+      select, input {
+        background: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid lightgrey;
+        padding: 4px 6px;
+        transition: all 0.2s;
+      }
+
+      select:active,
+      select:focus,
+      input:active,
+      input:focus {
+        border-bottom-color: turquoise;
+      }
+
+      select {
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
+        background-origin: content-box;
+        background-position: right -1rem center;
+        background-repeat: no-repeat;
+        background-size: 9px 6px;
+        padding-right: 1.5rem;
+      }
+
+      select {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+      }
+
+      select::-ms-expand {
+        display: none;
+      }
+      
+      /** BUTTON **/
+      button, input[type="submit"] {
+        cursor: pointer;
+        padding: 14px 20px;
+        border: 1px solid transparent;
+        font-size: 1.15rem;
+        border-radius: 2px;
+        transition: all 0.2s;
+        background-color: #fff;
+        border-radius: 99px;
+      }
+
+      button:hover,
+      button:active,
+      button:focus {
+        filter: sepia(1);
+      }
+
+      .button-primary {
+        border-color: turquoise;
+        background-color: turquoise;
+        color: #fff;
+      }
+
+      .button-grey {
+        border-color: rgb(160, 160, 160);
+        color: rgb(160, 160, 160);
+      }
+
+      .button-circle {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+      }
+
+      /** CONTAINER **/
+      .mganga {
+        margin: 0 auto;
+        padding-top: 80px;
+        width: 50%;
+      }
+
+      .mganga .mganga-form[data-salutation="singular"] *[data-salutation="plural"],
+      .mganga .mganga-form[data-salutation="plural"] *[data-salutation="singular"] {
+        display: none;
+      }
+
+      .mganga .mganga-form {
+        transition: all 1s ease-in-out;
+      }
+
+      .mganga .mganga-form[data-step="2"] {
+        margin-left: -50%;
+      }
+
+      .mganga .mganga-form .mganga-section {
+        text-align: center;
+        padding: 42px;
+        box-shadow: 1px 2px 16px #d1d1d1c9;
+        line-height: 2.7rem;
+      }
+
+      .mganga .mganga-form .mganga-section * {
+        line-height: 2.7rem;
+      }
+
+      /** FOOTER **/
+      .mganga-footer {
+        padding-top: 30px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .mganga-footer-step p {
+        margin-top: 10px;    
+      }
+
+      .mganga-footer-row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .mganga-navigation {
+        display: table;     
+        width: 100%;
+        position: relative;
+        padding-bottom: 60px;
+      }
+
+      .mganga-footer-step button:not(.button-primary) {
+        cursor: default;
+      }
+
+      .mganga-footer-step button:not(.button-primary) ~ p {
+        color: grey;
+        cursor: default;
+      }
+
+      .mganga-footer-row:before {
+        top: 14px;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+      }
+
+      .mganga-footer-step {
+        text-align: center;
+        position: relative;
+      }
+
+      /* DISTRICT FLAGS */
+      .district-flags {
+        width: 100%;
+        height: 40px;
+        margin-top: -2px;
+      }
+
+      .district-flags ul {
+        display: flex;
+      }
+
+      .district-flags ul li {
+        width: 12%;
+        background-color: #FFB44D;
+        list-style: none;
+        height: 40px;
+        margin-top: -29px;
+        transition: all 0.2s ease-in-out;
+        text-align: center;
+        color: #fff;
+        padding-top: 10px;
+        cursor: pointer;
+      }
+
+      .district-flags ul li:nth-child(2n),
+      .district-flags ul li:nth-child(5n)
+       {
+        background-color: #B96EF9;
+        margin-top: -28px;
+      }
+
+      .district-flags ul li:nth-child(4n) {
+        background-color: #6EF97F;
+        margin-top: -32px;
+      }
+
+      .district-flags ul li:nth-child(3n) {
+        background-color: #4DD5FF;
+      }
+
+      .district-flags ul li:hover {
+        margin-top: 0;
+      }
+    </style>
+    <script>
+      var $form = null;
+      var step = 1;
+
+      // Event handler
+      var onChangeSalutation = function(ev) {
+        $form.setAttribute('data-salutation', ev.target.value);
+      }
+
+      var onSubmitForm = function(ev) {
+        if (false) {
+          // @todo input-is-invalid
+          return false;
+        }
+
+        if (++step === 5) {
+          // Final submit
+          return false;
+        }
+
+        $form.setAttribute('data-step', step);
+
+        return false;
+      }
+
+      window.onload = function() {
+        $form = document.querySelector('.mganga-form');
+
+        // Bind events
+        $form.querySelector('select[name="salutation"]').onchange = onChangeSalutation;
+        $form.onsubmit = onSubmitForm;
+      }
+    </script>
+  </head>
+  <body>
+    <aside class="district-flags" title="@todo: Use bezirke-API to display amount of people living in this Bezirk; make height of column depend on it. Link with Bezirk landingpage">
+      <ul>
+        <li>Schönefeld</li>
+        <li>Plagwitz</li>
+        <li>Neustadt-Neuschönefeld</li>
+        <li>Reudnitz</li>
+        <li>Thonberg</li>
+        <li>Gohlis</li>
+        <li>Eutritzsch</li>
+        <li>Mitte (Ost)</li>
+        <li>Paunsdorf</li>
+      </ul>
+    </aside>
+
+    <div class="mganga">
+      <img src="logo.png" id="logo" alt="Working-logo der Leipziger Ecken" />
+
+      <div class="mganga-navigation">
+        <div class="mganga-footer-row">
+            <div class="mganga-footer-step">
+              <button type="button" class="button-primary button-circle">1</button>
+              <p>Allgemein</p>
+            </div>
+            <div class="mganga-footer-step">
+              <button type="button" class="button-circle">2</button>
+              <p>Standort</p>
+            </div>
+            <div class="mganga-footer-step">
+              <button type="button" class="button-circle" disabled="disabled">3</button>
+              <p>Kontakt</p>
+            </div>
+            <div class="mganga-footer-step">
+              <button type="button" class="button-circle" disabled="disabled">4</button>
+              <p>Beschreibung</p>
+          </div>
+          <div class="mganga-footer-step">
+            <button type="button" class="button-circle" disabled="disabled">5</button>
+            <p>Bestätigung</p>
+        </div> 
+        </div>
+    </div>
+    
+    <form method="POST" action="#" class="mganga-form" data-salutation="plural" data-step="1">
+
+      <div class="mganga-sections-wrapper">
+
+      <section class="mganga-section active">
+          <h1 class="float-left">Hi,</h1>
+          <br /><br />
+          <select name="salutation">
+            <option value="plural">Wir sind</option>
+            <option value="singular">Ich bin</option>
+          </select>
+          <span data-salutation="singular">
+            bin
+          </span>
+          <span data-salutation="plural">
+            sind
+          </span>
+          <input type="text" name="name" placeholder="Akteursname" autofocus />
+          <span>
+          , ein(e)
+          </span> 
+          <select>
+            <option>Initiative</option>
+            <option>Verein</option>
+            <option>Organisation</option>
+          </select>
+          <br />
+          <span>
+          aus Leipzig
+          </span>
+          <input list="bezirke" name="bezirk" placeholder="Bezirk" />.
+          <datalist id="bezirke">
+            <option value="Neustadt-Neuschönefeld">
+            <option value="Reudnitz">
+            <option value="Thonberg">
+            <option value="Mitte">
+            <option value="Plagwitz">
+            <option value="Schönefeld">
+          </datalist>
+          <br />
+          <br />
+          <span data-salutation="singular">
+            Meine
+          </span>
+          <span data-salutation="plural">
+            Unsere
+          </span> 
+          <span>
+            Angebote aus den Bereichen
+          </span>
+          <select>
+            <option>Kunst & Kultur</option>
+            <option>Sport</option>
+          </select>, 
+          <select>
+            <option>Musik</option>
+          </select> 
+          <span>
+            und
+          </span> 
+          <select>
+            <option>Radio</option>
+          </select>
+          <span>
+           richten sich an
+          </span>
+          <select>
+            <option>Erwachsene</option>
+            <option>Jugendliche</option>
+          </select>
+          <span>
+          .
+          </span>
+      </section>
+
+    </div>
+
+      <footer class="mganga-footer">
+        <button class="button-grey">
+          < Zurück
+        </button>
+        <button class="mganga-footer-submit button-primary">
+          Weiter zu "Standort" >
+        </button>
+      </footer>
+
+    </form>
+
+    </div>
+  </body>
+</html>
