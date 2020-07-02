@@ -1,0 +1,102 @@
+  body,*,h1,h2,h3,p,form,select,input,button,div,section,label {
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2a2a2a;
+    box-sizing: border-box;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .mganga-section *:not(h1) {
+    font-size: 1.3rem;
+  }
+
+  .float-left {
+    float: left;
+  }
+
+  #logo {
+    width: 70px;
+    margin: 0 auto;
+    margin-left: 43%;
+    margin-bottom: 40px;
+  }
+
+  /** INPUT **/
+  select, input {
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid lightgrey;
+    padding: 4px 6px;
+    transition: all 0.2s;
+  }
+
+  select:active,
+  select:focus,
+  input:active,
+  input:focus {
+    border-bottom-color: turquoise;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
+    background-origin: content-box;
+    background-position: right -1rem center;
+    background-repeat: no-repeat;
+    background-size: 9px 6px;
+    padding-right: 1.5rem;
+  }
+
+  select {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+
+  select::-ms-expand {
+    display: none;
+  }
+  
+  /** BUTTON **/
+  button, input[type="submit"] {
+    cursor: pointer;
+    padding: 14px 20px;
+    border: 1px solid transparent;
+    font-size: 1.15rem;
+    border-radius: 2px;
+    transition: all 0.2s;
+    background-color: #fff;
+    border-radius: 99px;
+  }
+
+  button:hover,
+  button:active,
+  button:focus {
+    filter: sepia(1);
+  }
+
+  .button-primary {
+    border-color: turquoise;
+    background-color: turquoise;
+    color: #fff;
+  }
+
+  .button-grey {
+    border-color: rgb(160, 160, 160);
+    color: rgb(160, 160, 160);
+  }
+
+  .button-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+  }
