@@ -24,6 +24,7 @@
         padding: 42px;
         box-shadow: 1px 2px 16px #d1d1d1c9;
         line-height: 2.7rem;
+        position: relative;
       }
 
       .mganga .mganga-form .mganga-section * {
@@ -127,6 +128,10 @@
         transition: all 1s ease-in-out;
       }
 
+      .mganga-form[data-step="1"] .mganga-footer {
+        flex-direction: row-reverse;
+      }
+
       .mganga-form[data-step="1"] .mganga-footer-prev {
         display: none;
       }
@@ -143,6 +148,10 @@
         margin-left: -3000px;
       }
 
+      .mganga-form[data-step="5"] .mganga-section-list {
+        margin-left: -4000px;
+      }
+
       .mganga-section-list {
         width: 5000px;
         display: flex;
@@ -155,19 +164,24 @@
         filter: blur(2px);
         pointer-events: none;
         transform: scale(0.88);
+        opacity: 0.85;
+        /** MAKE UNSELECTABLE **/
       }
 
       .mganga-form[data-step="1"] .mganga-section-list .mganga-section:nth-child(1),
       .mganga-form[data-step="2"] .mganga-section-list .mganga-section:nth-child(2),
       .mganga-form[data-step="3"] .mganga-section-list .mganga-section:nth-child(3),
-      .mganga-form[data-step="4"] .mganga-section-list .mganga-section:nth-child(4) {
+      .mganga-form[data-step="4"] .mganga-section-list .mganga-section:nth-child(4),
+      .mganga-form[data-step="5"] .mganga-section-list .mganga-section:nth-child(5) {
         filter: none;
         transform: none;
+        pointer-events: all;
+        opacity: 1;
       }
     </style>
     <script>
       var $container = null;
-      var $form = null; top:
+      var $form = null;
       var step = 1;
 
       // Event handler
@@ -191,15 +205,19 @@
       }
 
       var onSubmitForm = function(ev) {
+        var nextStepLabel = 'Formular absenden';
+
         if (false) {
           // @todo input-is-invalid
           return false;
         }
 
-        if (++step === 5) {
+        /*if (++step === 6) {
           // Final submit
           return false;
-        }
+        }*/
+
+        step++;
 
         $form.setAttribute('data-step', step);
         $form.querySelector('.mganga-navigation-step:nth-child('+ step +') button').classList.add('button-primary');
@@ -341,15 +359,108 @@
           </section>
 
           <section class="mganga-section">
-            <h1>2</h1>
+            <span data-salutation="singular">
+            Meine
+            </span>
+            <span data-salutation="plural">
+            Unsere
+            </span>
+            <span>
+            Räume/Dienste befinden sich
+            </span>
+            <input type="text" placeholder="Strasse & Hnr." />
+            <span>
+              in
+            </span>
+            <input type="text" placeholder="01234" />
+            <span>
+              Leipzig.
+            </span>
+            <br /><br />
+            <span data-salutation="singular">
+              Ich bin
+            </span>
+            <span data-salutation="plural">
+              Wir sind
+            </span>
+            <span>
+              in der Zeit von
+            </span>
+            <input type="text" placeholder="wochentags 08:00 - 18:00 Uhr" style="min-width: 300px;" />
+            <br />
+            <select>
+              <option>barrierefrei</option>
+              <option>nicht barrierefrei</option>
+            </select>
+            <span>
+              erreichbar.
+            </span>
+            <img src="map_bitmap.png" style="position: absolute;right: -65px;margin-top: -158px;width: 200px;border-radius: 99px;">
           </section>
 
           <section class="mganga-section">
-            <h1>3</h1>
+            <span>
+            Wer mit
+            </span>
+            <span data-salutation="singular">
+              mir
+            </span>
+            <span data-salutation="plural">
+              uns
+            </span>
+            <span>
+              Kontakt aufnehmen möchte, meldet sich bei
+            </span>
+            <input type="text" placeholder="Name Ansprechpartner*in" />
+            <span><br />
+              (Funktion:
+            </span>
+            <input type="text" placeholder="z.B. Sekretär*in" />
+            <span>
+            ) unter der Telefonnummer
+            </span>
+            <input type="tel" placeholder="+49 123 456 78" />
+            <span>
+              oder E-Mail-Adresse
+            </span>
+            <input type="email" placeholder="info@mein-verein.de" />
+            <span>
+              .
+            </span>
+            <br /><br />
+            <span data-salutation="singular">
+              Ich habe
+            </span>
+            <span data-salutation="plural">
+              Wir haben
+            </span>
+            <span>
+            eine Webseite unter
+            </span>
+            <input type="url" placeholder="https://mein-verein.de" />
+            <span>
+              .
+            </span>
           </section>
 
           <section class="mganga-section">
-            <h1>4</h1>
+            
+Bitte beschreibe den Akteur: Seit wann, welche Aktivitäten, gibt es Möglichkeiten zum Mitmachen?
+
+Photo.
+
+Schlagwörter (autocomplete mit favorisierten Vorgaben ODER mit Vorschlägen basierend auf Beschreibung).
+
+          </section>
+
+          <section class="mganga-section">
+            
+Das hochgeladene Bild verletzt keine Rechte Dritter und ist Eigentum des Akteurs.
+
+Ich stimme der Veröffentlichung der Daten unter einer Creative Commons Lizenz zu.
+
+[Optional, default "ja"] Ich stimme der Bereitstellung des Akteursprofil als Teil der offenen Leipziger Ecken Schnittstelle ("API") zu.
+
           </section>
 
         </div>
@@ -359,7 +470,7 @@
             < Zurück
           </button>
           <button class="mganga-footer-submit button-primary">
-            Weiter zu "Standort" >
+            Weiter zu Standort >
           </button>
         </footer>
 

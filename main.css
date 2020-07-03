@@ -40,7 +40,7 @@
   select:focus,
   input:active,
   input:focus {
-    border-bottom-color: turquoise;
+    border-bottom-color: #4DD5FF;
   }
 
   select {
@@ -81,8 +81,12 @@
   }
 
   .button-primary {
-    border-color: turquoise;
-    background-color: turquoise;
+    border-color: #4DD5FF;
+    background-color: #4DD5FF;
+    color: #fff;
+  }
+
+  .button-primary * {
     color: #fff;
   }
 
