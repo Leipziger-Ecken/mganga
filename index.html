@@ -168,6 +168,10 @@
         /** MAKE UNSELECTABLE **/
       }
 
+      .mganga-section-list .mganga-section.with-attachment {
+        padding-right: 4%;
+      }
+
       .mganga-form[data-step="1"] .mganga-section-list .mganga-section:nth-child(1),
       .mganga-form[data-step="2"] .mganga-section-list .mganga-section:nth-child(2),
       .mganga-form[data-step="3"] .mganga-section-list .mganga-section:nth-child(3),
@@ -177,6 +181,17 @@
         transform: none;
         pointer-events: all;
         opacity: 1;
+      }
+
+      .round-widget {
+        position: absolute;
+        right: -4%;
+        margin-top: 1%;
+        width: 200px;
+        height: 250px;
+        border-radius: 11px;
+        box-shadow: 1px 2px 16px #c7c7c7e3;
+        border: none;
       }
     </style>
     <script>
@@ -188,6 +203,17 @@
       var onChangeSalutation = function(ev) {
         $form.setAttribute('data-salutation', ev.target.value);
       }
+
+      var onChangeFileInput = function(ev) {
+        var label	 = ev.target.nextElementSibling;
+        var fileName = ev.target.value.split('\\').pop();
+
+        if (fileName) {
+          label.innerHTML = fileName;
+        } else {
+          label.innerHTML = label.getAttribute('data-placeholder');
+        }
+      };
 
       var gotoPrevStep = function(ev) {
         $form.querySelector('.mganga-navigation-step:nth-child('+ step +') button').classList.remove('button-primary');
@@ -232,6 +258,7 @@
         // Bind events
         $form.querySelector('.mganga-footer-prev').onclick = gotoPrevStep;
         $form.querySelector('.mganga-navigation-step').onclick = onClickNavigationStep;
+        $form.querySelector('input[type="file"]').onchange = onChangeFileInput;
         $form.onsubmit = onSubmitForm;
 
         // Events step 1
@@ -287,78 +314,81 @@
         <div class="mganga-section-list">
 
           <section class="mganga-section active">
-              <h1 class="float-left">Hi,</h1>
-              <br />
-              <select name="salutation">
-                <option value="plural">Wir sind</option>
-                <option value="singular">Ich bin</option>
-              </select>
-              <span data-salutation="singular">
-                bin
-              </span>
-              <span data-salutation="plural">
-                sind
-              </span>
-              <input type="text" name="name" placeholder="Akteursname" autofocus required />
-              <span>
-              , ein(e)
-              </span> 
-              <select>
-                <option>Initiative</option>
-                <option>Verein</option>
-                <option>Organisation</option>
-              </select>
-              <br />
-              <span>
-              aus Leipzig
-              </span>
-              <input list="bezirke" name="bezirk" placeholder="Bezirk" required />
-              <span>.</span>
-              <datalist id="bezirke">
-                <option value="Neustadt-Neuschönefeld">
-                <option value="Reudnitz">
-                <option value="Thonberg">
-                <option value="Mitte">
-                <option value="Plagwitz">
-                <option value="Schönefeld">
-              </datalist>
-              <br />
-              <br />
-              <span data-salutation="singular">
-                Meine
-              </span>
-              <span data-salutation="plural">
-                Unsere
-              </span> 
-              <span>
-                Angebote aus den Bereichen
-              </span>
-              <select>
-                <option>Kunst & Kultur</option>
-                <option>Sport</option>
-              </select>, 
-              <select>
-                <option>Musik</option>
-              </select> 
-              <span>
-                und
-              </span> 
-              <select>
-                <option>Radio</option>
-              </select>
-              <span>
-              richten sich an
-              </span>
-              <select>
-                <option>Erwachsene</option>
-                <option>Jugendliche</option>
-              </select>
-              <span>
-              .
-              </span>
+            <h1 class="float-left">Hi,</h1>
+            <br />
+            <select name="salutation">
+              <option value="plural">Wir sind</option>
+              <option value="singular">Ich bin</option>
+            </select>
+            <span data-salutation="singular">
+              bin
+            </span>
+            <span data-salutation="plural">
+              sind
+            </span>
+            <input type="text" name="name" placeholder="Akteursname" autofocus required />
+            <span>
+            , ein(e)
+            </span> 
+            <select>
+              <option>Initiative</option>
+              <option>Verein</option>
+              <option>Organisation</option>
+            </select>
+            <br />
+            <span>
+            aus Leipzig
+            </span>
+            <input list="bezirke" name="bezirk" placeholder="Bezirk" required />
+            <datalist id="bezirke">
+              <option value="Neustadt-Neuschönefeld">
+              <option value="Reudnitz">
+              <option value="Thonberg">
+              <option value="Mitte">
+              <option value="Plagwitz">
+              <option value="Schönefeld">
+            </datalist>
+
+            <span>.</span>
+            <br />
+            <br />
+            <span data-salutation="singular">
+              Meine
+            </span>
+            <span data-salutation="plural">
+              Unsere
+            </span> 
+            <span>
+              Angebote aus den Bereichen
+            </span>
+            <select>
+              <option>Kunst & Kultur</option>
+              <option>Sport</option>
+            </select>, 
+            <select>
+              <option>Musik</option>
+            </select> 
+            <span>
+              und
+            </span> 
+            <select>
+              <option>Radio</option>
+            </select>
+            <span>
+            richten sich an
+            </span>
+            <select>
+              <option>Erwachsene</option>
+              <option>Jugendliche</option>
+            </select>
+            <span>
+            .
+            </span>
           </section>
 
-          <section class="mganga-section">
+          <section class="mganga-section with-attachment">
+            <img src="map_bitmap.png" class="round-widget" placeholder="Vorschau Adresse auf Karte">
+
             <span data-salutation="singular">
             Meine
             </span>
@@ -395,7 +425,6 @@
             <span>
               erreichbar.
             </span>
-            <img src="map_bitmap.png" style="position: absolute;right: -65px;margin-top: -158px;width: 200px;border-radius: 99px;">
           </section>
 
           <section class="mganga-section">
@@ -443,33 +472,67 @@
             </span>
           </section>
 
-          <section class="mganga-section">
-            
-Bitte beschreibe den Akteur: Seit wann, welche Aktivitäten, gibt es Möglichkeiten zum Mitmachen?
+          <section class="mganga-section with-attachment">
+            <input type="file" name="file" id="file" class="inputfile" />
+            <label for="file" class="button button-grey round-widget" data-placeholder="Akteurbild hochladen">Akteurbild hochladen</label>
 
-Photo.
+            <span>Beschreibe den Akteur genauer:</span>
+            <textarea placeholder="Seit wann, welche Aktivitäten, gibt es Möglichkeiten zum Mitmachen?"></textarea>
+            <br /><br />
 
-Schlagwörter (autocomplete mit favorisierten Vorgaben ODER mit Vorschlägen basierend auf Beschreibung).
+            <span>Folgende Schlagwörter beschreiben</span>
+            <span data-salutation="singular">
+              meine
+            </span>
+            <span data-salutation="plural">
+              unsere
+            </span>
+            <span>
+              Arbeit:
+            </span>
 
+            <input list="tags" name="tags" placeholder="z.B. kostenlos, drinnen" />
+
+            <datalist id="tags">
+              <option value="kostenlos">
+              <option value="saisonal">
+              <option value="drinnen">
+              <option value="draussen">
+              <option value="inklusiv">
+            </datalist>
           </section>
 
           <section class="mganga-section">
-            
-Das hochgeladene Bild verletzt keine Rechte Dritter und ist Eigentum des Akteurs.
+            <h1>Nutzungs- und Datenschutzbestätigung</h1>
 
-Ich stimme der Veröffentlichung der Daten unter einer Creative Commons Lizenz zu.
+            <label>
+              <input type="checkbox" />
+              Das hochgeladene Bild verletzt keine Rechte Dritter und ist Eigentum des Akteurs.
+            </label>
 
-[Optional, default "ja"] Ich stimme der Bereitstellung des Akteursprofil als Teil der offenen Leipziger Ecken Schnittstelle ("API") zu.
+            <br /><br />
+
+            <label>
+              <input type="checkbox" />
+              Ich stimme der Veröffentlichung der genannten Daten unter einer Creative Commons Lizenz zu.
+            </label>
+
+            <br /><br />
+
+            <label>
+              <input type="checkbox" checked="true" />
+              Ich stimme der Bereitstellung des Akteursprofil als Teil der offenen Leipziger Ecken Schnittstelle ("API") zu.
+            </label>
 
           </section>
 
         </div>
 
         <footer class="mganga-footer">
-          <button class="mganga-footer-prev button-grey">
+          <button class="mganga-footer-prev button button-grey">
             < Zurück
           </button>
-          <button class="mganga-footer-submit button-primary">
+          <button class="mganga-footer-submit button button-primary">
             Weiter zu Standort >
           </button>
         </footer>

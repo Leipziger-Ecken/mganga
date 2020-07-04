@@ -1,4 +1,4 @@
-  body,*,h1,h2,h3,p,form,select,input,button,div,section,label {
+  body,*,h1,h2,h3,p,form,select,input,textarea,button,div,section,label {
     padding: 0;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
@@ -26,7 +26,7 @@
   }
 
   /** INPUT **/
-  select, input {
+  select, input, textarea {
     background: none;
     border-top: none;
     border-left: none;
@@ -61,9 +61,13 @@
   select::-ms-expand {
     display: none;
   }
+
+  textarea {
+    width: 100%;
+  }
   
   /** BUTTON **/
-  button, input[type="submit"] {
+  .button, button, input[type="submit"] {
     cursor: pointer;
     padding: 14px 20px;
     border: 1px solid transparent;
@@ -74,10 +78,35 @@
     border-radius: 99px;
   }
 
-  button:hover,
-  button:active,
-  button:focus {
+  .button:hover,
+  .button:active,
+  .button:focus {
     filter: sepia(1);
+  }
+
+  input[type="file"] {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+  }
+
+  input[type="file"] + label {
+    display: inline-block;
+    cursor: pointer;
+    padding-top: 70px;
+  }
+
+  input[type="file"]:focus + label,
+  input[type="file"] + label:hover {
+    /*background-color: red;*/
+  }
+
+  .input[type="file"]:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
   }
 
   .button-primary {
