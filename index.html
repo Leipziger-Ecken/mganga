@@ -5,195 +5,7 @@
     <link rel="shortcut icon" href="logo.png"/>
 
     <link rel="stylesheet" href="main.css" />
-    
-    <style>
-      /** CONTAINER **/
-      .mganga {
-        margin: 0 auto;
-        padding-top: 80px;
-        width: 50%;
-      }
 
-      .mganga .mganga-form[data-salutation="singular"] *[data-salutation="plural"],
-      .mganga .mganga-form[data-salutation="plural"] *[data-salutation="singular"] {
-        display: none;
-      }
-
-      .mganga .mganga-form .mganga-section {
-        text-align: center;
-        padding: 42px;
-        box-shadow: 1px 2px 16px #d1d1d1c9;
-        line-height: 2.7rem;
-        position: relative;
-      }
-
-      .mganga .mganga-form .mganga-section * {
-        line-height: 2.7rem;
-      }
-
-      /** FOOTER **/
-      .mganga-footer {
-        padding-top: 30px;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      /** HEADER NAVIGATION **/
-
-      .mganga-navigation-step p {
-        margin-top: 10px;    
-      }
-
-      .mganga-navigation-row {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .mganga-navigation {
-        display: table;     
-        width: 100%;
-        position: relative;
-        padding-bottom: 60px;
-      }
-
-      .mganga-navigation-step button:not(.button-primary) {
-        cursor: default;
-      }
-
-      .mganga-navigation-step button:not(.button-primary) ~ p {
-        color: grey;
-        cursor: default;
-      }
-
-      .mganga-navigation-row:before {
-        top: 15px;
-        bottom: 0;
-        position: absolute;
-        content: " ";
-        width: 100%;
-        height: 1px;
-        background-color: #ccc;
-      }
-
-      .mganga-navigation-step {
-        text-align: center;
-        position: relative;
-      }
-
-      /* DISTRICT FLAGS */
-      .district-flags {
-        width: 100%;
-        height: 40px;
-        margin-top: -2px;
-      }
-
-      .district-flags ul {
-        display: flex;
-      }
-
-      .district-flags ul li {
-        width: 12%;
-        background-color: #FFB44D;
-        list-style: none;
-        height: 40px;
-        margin-top: -29px;
-        transition: all 0.2s ease-in-out;
-        text-align: center;
-        color: #fff;
-        padding-top: 10px;
-        cursor: pointer;
-      }
-
-      .district-flags ul li:nth-child(2n),
-      .district-flags ul li:nth-child(5n)
-       {
-        background-color: #B96EF9;
-        margin-top: -28px;
-      }
-
-      .district-flags ul li:nth-child(4n) {
-        background-color: #6EF97F;
-        margin-top: -32px;
-      }
-
-      .district-flags ul li:nth-child(3n) {
-        background-color: #4DD5FF;
-      }
-
-      .district-flags ul li:hover {
-        margin-top: 0;
-      }
-
-      .mganga-section-list {
-        transition: all 1s ease-in-out;
-      }
-
-      .mganga-form[data-step="1"] .mganga-footer {
-        flex-direction: row-reverse;
-      }
-
-      .mganga-form[data-step="1"] .mganga-footer-prev {
-        display: none;
-      }
-
-      .mganga-form[data-step="2"] .mganga-section-list {
-        margin-left: -1000px;
-      }
-
-      .mganga-form[data-step="3"] .mganga-section-list {
-        margin-left: -2000px;
-      }
-
-      .mganga-form[data-step="4"] .mganga-section-list {
-        margin-left: -3000px;
-      }
-
-      .mganga-form[data-step="5"] .mganga-section-list {
-        margin-left: -4000px;
-      }
-
-      .mganga-section-list {
-        width: 5000px;
-        display: flex;
-        transition: 0.25s all ease-out;
-      }
-
-      .mganga-section-list .mganga-section {
-        transition: all 1s;
-        width: 1000px;
-        filter: blur(2px);
-        pointer-events: none;
-        transform: scale(0.88);
-        opacity: 0.85;
-        /** MAKE UNSELECTABLE **/
-      }
-
-      .mganga-section-list .mganga-section.with-attachment {
-        padding-right: 4%;
-      }
-
-      .mganga-form[data-step="1"] .mganga-section-list .mganga-section:nth-child(1),
-      .mganga-form[data-step="2"] .mganga-section-list .mganga-section:nth-child(2),
-      .mganga-form[data-step="3"] .mganga-section-list .mganga-section:nth-child(3),
-      .mganga-form[data-step="4"] .mganga-section-list .mganga-section:nth-child(4),
-      .mganga-form[data-step="5"] .mganga-section-list .mganga-section:nth-child(5) {
-        filter: none;
-        transform: none;
-        pointer-events: all;
-        opacity: 1;
-      }
-
-      .round-widget {
-        position: absolute;
-        right: -4%;
-        margin-top: 1%;
-        width: 200px;
-        height: 250px;
-        border-radius: 11px;
-        box-shadow: 1px 2px 16px #c7c7c7e3;
-        border: none;
-      }
-    </style>
     <script>
       var $container = null;
       var $form = null;
@@ -231,6 +43,8 @@
       }
 
       var onSubmitForm = function(ev) {
+        step++;
+
         var nextStepLabel = 'Formular absenden';
 
         if (false) {
@@ -238,15 +52,19 @@
           return false;
         }
 
-        /*if (++step === 6) {
+        if (step === 6) {
           // Final submit
           return false;
-        }*/
+        }
 
-        step++;
+        if (step < 5) {
+          nextStepLabel = 'Weiter zu ' + $form.querySelector('.mganga-navigation-step:nth-child('+ (step + 1) +') p').innerHTML;
+        }
+        
 
         $form.setAttribute('data-step', step);
         $form.querySelector('.mganga-navigation-step:nth-child('+ step +') button').classList.add('button-primary');
+        $form.querySelector('.mganga-footer-submit span').innerHTML = nextStepLabel;
         
         return false;
       }
@@ -473,11 +291,11 @@
           </section>
 
           <section class="mganga-section with-attachment">
-            <input type="file" name="file" id="file" class="inputfile" />
+            <input type="file" name="file" id="file" accept="image/*" />
             <label for="file" class="button button-grey round-widget" data-placeholder="Akteurbild hochladen">Akteurbild hochladen</label>
 
             <span>Beschreibe den Akteur genauer:</span>
-            <textarea placeholder="Seit wann, welche Aktivitäten, gibt es Möglichkeiten zum Mitmachen?"></textarea>
+            <textarea rows="3" placeholder="Seit wann, welche Aktivitäten, gibt es Möglichkeiten zum Mitmachen?"></textarea>
             <br /><br />
 
             <span>Folgende Schlagwörter beschreiben</span>
@@ -504,24 +322,36 @@
 
           <section class="mganga-section">
             <h1>Nutzungs- und Datenschutzbestätigung</h1>
+            <br />
 
-            <label>
-              <input type="checkbox" />
-              Das hochgeladene Bild verletzt keine Rechte Dritter und ist Eigentum des Akteurs.
+            <input type="checkbox" name="check_privacy" id="check_privacy" />
+            <label for="check_privacy">
+              <span>Das hochgeladene Bild verletzt keine Rechte Dritter und ist Eigentum des Akteurs.</span> 
             </label>
 
             <br /><br />
 
-            <label>
-              <input type="checkbox" />
-              Ich stimme der Veröffentlichung der genannten Daten unter einer Creative Commons Lizenz zu.
+            <input type="checkbox" name="check_cc" id="check_cc" />
+            <label for="check_cc">
+              <span data-salutation="singular">
+                Ich stimme
+              </span>
+              <span data-salutation="plural">
+                Wir stimmen
+              </span><span>der Veröffentlichung der genannten Daten unter einer Creative Commons Lizenz zu.</span>
             </label>
 
-            <br /><br />
+            <br />
 
-            <label>
-              <input type="checkbox" checked="true" />
-              Ich stimme der Bereitstellung des Akteursprofil als Teil der offenen Leipziger Ecken Schnittstelle ("API") zu.
+            <input type="checkbox" checked="true" name="check_api" id="check_api" />
+            <label for="check_api">
+              <span data-salutation="singular">
+                Ich stimme
+              </span>
+              <span data-salutation="plural">
+                Wir stimmen
+              </span> 
+              <span>der Bereitstellung des Akteursprofil als Teil der offenen Leipziger Ecken Schnittstelle (<a href="#" title="Zur Infoseite API-Schnittstelle (neuer Tab)" target="_blank">"API"</a>) zu. <i>Jederzeit widerrufbar.</i></span>
             </label>
 
           </section>
@@ -529,11 +359,11 @@
         </div>
 
         <footer class="mganga-footer">
-          <button class="mganga-footer-prev button button-grey">
-            < Zurück
+          <button class="mganga-footer-prev button button-grey" title="Zum vorherigen Schritt gehen">
+            &larr; Zurück
           </button>
-          <button class="mganga-footer-submit button button-primary">
-            Weiter zu Standort >
+          <button class="mganga-footer-submit button button-primary" title="Eingaben prüfen und zum nächsten Schritt gehen">
+            <span>Weiter zu Standort</span> &rarr;
           </button>
         </footer>
 

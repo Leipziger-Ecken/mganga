@@ -1,13 +1,26 @@
-  body,*,h1,h2,h3,p,form,select,input,textarea,button,div,section,label {
+  body,*,h1,h2,h3,p,form,select,option,input,textarea,button,div,section,label {
     padding: 0;
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    /*font-family: Arial, Helvetica, sans-serif;*/
+    font-family: 'SourceSerifPro';
+
     color: #2a2a2a;
     box-sizing: border-box;
   }
 
   body {
     overflow-x: hidden;
+
+  }
+
+  /**
+   Web fonts are highly WIP - further investigate good combination
+   at https://beautifulwebtype.com/source-serif-pro/
+ */
+
+  @font-face {
+    font-family: 'SourceSerifPro';
+    src: url('SourceSerifPro-Regular.ttf') format('truetype');
   }
 
   .mganga-section *:not(h1) {
@@ -39,8 +52,15 @@
   select:active,
   select:focus,
   input:active,
-  input:focus {
-    border-bottom-color: #4DD5FF;
+  input:focus,
+  textarea:active,
+  textarea:focus {
+    border-color: #4DD5FF;
+  }
+
+  a {
+    color:  #4DD5FF;
+    border-color: #4DD5FF;
   }
 
   select {
@@ -97,11 +117,12 @@
     display: inline-block;
     cursor: pointer;
     padding-top: 70px;
+    background-color: #f1f1f1;
   }
 
   input[type="file"]:focus + label,
   input[type="file"] + label:hover {
-    /*background-color: red;*/
+    transform: scale(1.05);
   }
 
   .input[type="file"]:focus + label {
@@ -132,4 +153,221 @@
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 15px;
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  input[type="checkbox"] + label {
+    cursor: pointer;
+  }
+
+  input[type="checkbox"] + label span {
+    padding-left: 12px;
+  }
+
+  input[type="checkbox"] + label:before {
+    content: '';
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #4DD5FF;
+    margin-left: -26px;
+    margin-top: 7px;
+  }
+
+  input[type="checkbox"]:checked+label::before {
+    box-shadow: inset 0px 0px 0px 3px #fff;
+    background-color: #4DD5FF;
+  }
+
+  /** APP **/
+
+  /** CONTAINER **/
+  .mganga {
+    margin: 0 auto;
+    padding-top: 80px;
+    width: 50%;
+  }
+
+  .mganga .mganga-form[data-salutation="singular"] *[data-salutation="plural"],
+  .mganga .mganga-form[data-salutation="plural"] *[data-salutation="singular"] {
+    display: none;
+  }
+
+  .mganga .mganga-form .mganga-section {
+    text-align: center;
+    padding: 42px;
+    height: max-content;
+    box-shadow: 1px 2px 16px #d1d1d1c9;
+    line-height: 2.7rem;
+    position: relative;
+  }
+
+  .mganga .mganga-form .mganga-section * {
+    line-height: 2.7rem;
+  }
+
+  /** FOOTER **/
+  .mganga-footer {
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /** HEADER NAVIGATION **/
+
+  .mganga-navigation-step p {
+    margin-top: 10px;    
+  }
+
+  .mganga-navigation-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .mganga-navigation {
+    display: table;     
+    width: 100%;
+    position: relative;
+    padding-bottom: 60px;
+  }
+
+  .mganga-navigation-step button:not(.button-primary) {
+    cursor: default;
+  }
+
+  .mganga-navigation-step button:not(.button-primary) ~ p {
+    color: grey;
+    cursor: default;
+  }
+
+  .mganga-navigation-row:before {
+    top: 15px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+  }
+
+  .mganga-navigation-step {
+    text-align: center;
+    position: relative;
+  }
+
+  /* DISTRICT FLAGS */
+  .district-flags {
+    width: 100%;
+    height: 40px;
+    margin-top: -2px;
+  }
+
+  .district-flags ul {
+    display: flex;
+  }
+
+  .district-flags ul li {
+    width: 12%;
+    background-color: #FFB44D;
+    list-style: none;
+    height: 40px;
+    margin-top: -29px;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    color: #fff;
+    padding-top: 10px;
+    cursor: pointer;
+  }
+
+  .district-flags ul li:nth-child(2n),
+  .district-flags ul li:nth-child(5n)
+   {
+    background-color: #B96EF9;
+    margin-top: -28px;
+  }
+
+  .district-flags ul li:nth-child(4n) {
+    background-color: #6EF97F;
+    margin-top: -32px;
+  }
+
+  .district-flags ul li:nth-child(3n) {
+    background-color: #4DD5FF;
+  }
+
+  .district-flags ul li:hover {
+    margin-top: 0;
+  }
+
+  .mganga-section-list {
+    transition: all 1s ease-in-out;
+  }
+
+  .mganga-form[data-step="1"] .mganga-footer {
+    flex-direction: row-reverse;
+  }
+
+  .mganga-form[data-step="1"] .mganga-footer-prev {
+    display: none;
+  }
+
+  .mganga-form[data-step="2"] .mganga-section-list {
+    margin-left: -1000px;
+  }
+
+  .mganga-form[data-step="3"] .mganga-section-list {
+    margin-left: -2000px;
+  }
+
+  .mganga-form[data-step="4"] .mganga-section-list {
+    margin-left: -3000px;
+  }
+
+  .mganga-form[data-step="5"] .mganga-section-list {
+    margin-left: -4000px;
+  }
+
+  .mganga-section-list {
+    width: 5000px;
+    display: flex;
+    transition: 0.25s all ease-out;
+  }
+
+  .mganga-section-list .mganga-section {
+    transition: all 1s;
+    width: 1000px;
+    filter: blur(2px);
+    pointer-events: none;
+    transform: scale(0.88);
+    opacity: 0.85;
+    /** MAKE UNSELECTABLE **/
+  }
+
+  .mganga-section-list .mganga-section.with-attachment {
+    padding-right: 4%;
+  }
+
+  .mganga-form[data-step="1"] .mganga-section-list .mganga-section:nth-child(1),
+  .mganga-form[data-step="2"] .mganga-section-list .mganga-section:nth-child(2),
+  .mganga-form[data-step="3"] .mganga-section-list .mganga-section:nth-child(3),
+  .mganga-form[data-step="4"] .mganga-section-list .mganga-section:nth-child(4),
+  .mganga-form[data-step="5"] .mganga-section-list .mganga-section:nth-child(5) {
+    filter: none;
+    transform: none;
+    pointer-events: all;
+    opacity: 1;
+  }
+
+  .round-widget {
+    position: absolute;
+    right: -4%;
+    margin-top: 1%;
+    width: 200px;
+    height: 250px;
+    border-radius: 11px;
+    box-shadow: 1px 2px 16px #c7c7c7e3;
+    border: none;
   }
