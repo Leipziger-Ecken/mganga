@@ -11,7 +11,80 @@
       var $form = null;
       var step = 1;
 
-      // Event handler
+      // -- HELPERS --
+
+      /**
+       * @param {number} step
+       * @return HTMLElement | null
+       */
+       var getStepContainer = function(step) {
+        return $form.querySelector('.mganga-section:nth-child(' + step + ')');
+      }
+
+      /**
+       * @param {number} step
+       * @return HTMLElement | null
+       */
+      var getStepNavigationItem = function(step) {
+        return $form.querySelector('.mganga-navigation-step:nth-child('+ step +')');
+      }
+      
+      /**
+       * @param {number} step
+       * @return string
+       */
+       var getStepLabel = function(step) {
+
+        if (isNaN(step)) {
+          return '';
+        }
+
+        var stepLabel = 'Formular absenden';
+
+        if (step < 6) {
+          stepLabel = 'Weiter zu ' + getStepNavigationItem(step).querySelector('p').innerHTML;
+        }
+
+        return stepLabel;
+      }
+
+      /**
+       * @param {number} step 
+       * @return boolean
+       */
+      var formSectionIsValid = function(step) {
+        if (isNaN(step)) {
+          return false;
+        }
+
+        var $section = getStepContainer(step);
+        var isValid = true;
+
+        $section.querySelectorAll('[required]').forEach(function(inputItem) {
+          // Similar to "_.any()"
+          // @todo let 'im iterate over all input types
+          if (!isValid) {
+            return;
+          }
+          
+          if (!inputItem.checkValidity()) {
+            isValid = false;
+          }
+        });
+
+        return isValid;
+      }
+
+      var gotoPrevStep = function(ev) {
+        getStepNavigationItem(step).querySelector('button').classList.remove('button-primary');
+        $form.setAttribute('data-step', --step);
+
+        $form.querySelector('.mganga-footer-submit span').innerHTML = getStepLabel(step + 1);
+        return false;
+      }
+
+      // EVENT HANDLERS
+      
       var onChangeSalutation = function(ev) {
         $form.setAttribute('data-salutation', ev.target.value);
       }
@@ -27,12 +100,6 @@
         }
       };
 
-      var gotoPrevStep = function(ev) {
-        $form.querySelector('.mganga-navigation-step:nth-child('+ step +') button').classList.remove('button-primary');
-        $form.setAttribute('data-step', --step);
-        return false;
-      }
-
       var onClickNavigationStep = function(ev) {
         var target = ev.target;
 
@@ -43,33 +110,30 @@
       }
 
       var onSubmitForm = function(ev) {
-        step++;
 
-        var nextStepLabel = 'Formular absenden';
-
-        if (false) {
-          // @todo input-is-invalid
+        if (!formSectionIsValid(step)) {
+          // @todo
+          alert('Alle Felder ausfüllen!');
           return false;
         }
 
-        if (step === 6) {
-          // Final submit
-          return false;
-        }
-
-        if (step < 5) {
-          nextStepLabel = 'Weiter zu ' + $form.querySelector('.mganga-navigation-step:nth-child('+ (step + 1) +') p').innerHTML;
+        if (step === 5) {
+          // @todo submit
+          alert('SUBMIT!');
+          return true;
         }
         
+        $form.setAttribute('data-step', ++step);
+        getStepNavigationItem(step).querySelector('button').classList.add('button-primary');
 
-        $form.setAttribute('data-step', step);
-        $form.querySelector('.mganga-navigation-step:nth-child('+ step +') button').classList.add('button-primary');
-        $form.querySelector('.mganga-footer-submit span').innerHTML = nextStepLabel;
+        $form.querySelector('.mganga-footer-submit span').innerHTML = getStepLabel(step + 1);
         
         return false;
       }
 
       window.onload = function() {
+        // Initialize
+        // Set references to DOM elements
         $container = document.querySelector('.mganga');
         $form = document.querySelector('.mganga-form');
 
@@ -77,10 +141,8 @@
         $form.querySelector('.mganga-footer-prev').onclick = gotoPrevStep;
         $form.querySelector('.mganga-navigation-step').onclick = onClickNavigationStep;
         $form.querySelector('input[type="file"]').onchange = onChangeFileInput;
-        $form.onsubmit = onSubmitForm;
-
-        // Events step 1
         $form.querySelector('select[name="salutation"]').onchange = onChangeSalutation;
+        $form.onsubmit = onSubmitForm;
       }
     </script>
   </head>
@@ -102,7 +164,7 @@
     <div class="mganga">
       <img src="logo.png" id="logo" alt="Working-logo der Leipziger Ecken" />
     
-      <form method="POST" action="#" class="mganga-form" data-salutation="plural" data-step="1">
+      <form method="POST" action="#" class="mganga-form" data-salutation="plural" data-step="1" novalidate>
 
         <div class="mganga-navigation">
           <div class="mganga-navigation-row">
@@ -131,7 +193,7 @@
 
         <div class="mganga-section-list">
 
-          <section class="mganga-section active">
+          <section class="mganga-section">
             <h1 class="float-left">Hi,</h1>
             <br />
             <select name="salutation">
@@ -320,7 +382,7 @@
             </datalist>
           </section>
 
-          <section class="mganga-section">
+          <section class="mganga-section text-left">
             <h1>Nutzungs- und Datenschutzbestätigung</h1>
             <br />
 
@@ -338,7 +400,7 @@
               </span>
               <span data-salutation="plural">
                 Wir stimmen
-              </span><span>der Veröffentlichung der genannten Daten unter einer Creative Commons Lizenz zu.</span>
+              </span><span>der Veröffentlichung der genannten Daten unter einer <a href="#">Creative Commons Lizenz</a> zu.</span>
             </label>
 
             <br />
